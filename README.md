@@ -8,6 +8,8 @@
 
 类似微信的webView进度条加载，支持右滑/侧滑返回，MMWebView继承于WKWebView，按照UIWebView代理的方式，重写WKNavigationDelegate。写本控件的初衷是因为公司项目中多使用UIWebView，为了添加右滑返回和进度条，如果改成WKWebView，工作量比较大。所以写了MMWebView，方便全局修改。至于进度条，可以用使用本控件中的，也可以自己写。希望本控件可以帮助到大家。
 
+更多WKWebView的相关知识，可以查阅SDK，[这篇文章](https://github.com/dexianyinjiu/WKWebView)或许也会有些帮助。
+
 ## 安装[CocoaPods]
 
 1. `pod 'MMWebView', '~> 1.0'`;
@@ -71,8 +73,5 @@ _webView.allowsBackForwardNavigationGestures = YES;
 
 MIT
 
-## 备注
-
-更多WKWebView的相关知识，可以查阅SDK，（[这篇文章](https://github.com/dexianyinjiu/WKWebView)）或许也会有些帮助。
 
 
