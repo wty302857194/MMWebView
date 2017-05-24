@@ -71,4 +71,8 @@ _webView.allowsBackForwardNavigationGestures = YES;
 
 MIT
 
+## 备注
+
+更多WKWebView的相关知识，可以查阅SDK，（[这篇文章](https://github.com/dexianyinjiu/WKWebView)）或许也会有些帮助。
+
 
