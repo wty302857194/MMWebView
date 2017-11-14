@@ -20,9 +20,9 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        //监听网页加载进度
+        // 监听网页加载进度
         [self addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
-        //监听网页标题变化
+        // 监听网页标题变化
         [self addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:nil];
     }
     return self;
@@ -65,6 +65,21 @@
     }
 }
 
+#pragma mark - 清缓存
+- (void)clearCache
+{
+    // 所有类型缓存[详见WKWebsiteDataRecord]
+    NSSet *websiteDataTypes = [WKWebsiteDataStore allWebsiteDataTypes];
+    // 所有时间
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:0];
+    // 移除
+    [[WKWebsiteDataStore defaultDataStore] removeDataOfTypes:websiteDataTypes
+                                               modifiedSince:date
+                                           completionHandler:^{
+                                               
+                                           }];
+}
+
 #pragma mark - 进度<KVO>
 // 网页加载进度 || 网页标题
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -75,8 +90,7 @@
         if ([self.delegate respondsToSelector:@selector(webView:estimatedProgress:)]) {
             [self.delegate webView:self estimatedProgress:progress];
         }
-        
-        //如果使用本类中的进度条，代理可不用!!!
+        // 如果使用本类中的进度条，代理可不用!!!
         if (_progressBar) {
             _progressBar.progress = progress;
             if (progress == 1.0) {

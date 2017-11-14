@@ -20,7 +20,7 @@
 {
     ViewController *mmVC = [[ViewController alloc] init];
     UINavigationController *mmNav = [[UINavigationController alloc] initWithRootViewController:mmVC];
-    [mmNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"default_top_bar"] forBarMetrics:UIBarMetricsDefault];
+    [mmNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"default_bar"] forBarMetrics:UIBarMetricsDefault];
     mmNav.navigationBar.tintColor = [UIColor blackColor];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

@@ -20,15 +20,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"DEMO";
     
+    // 初始化
     _webView = [[MMWebView alloc] initWithFrame:self.view.bounds];
-    _webView.backgroundColor = [UIColor whiteColor];
-    _webView.opaque = NO;
+    // 代理
     _webView.delegate = self;
+    // 显示进度条
     _webView.displayProgressBar = YES;
+    // 允许侧滑返回
     _webView.allowsBackForwardNavigationGestures = YES;
+    // 加载
     [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://github.com"]]];
+    // 添加视图
     [self.view addSubview:_webView];
 }
 
