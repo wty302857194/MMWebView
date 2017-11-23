@@ -11,7 +11,7 @@
 
 更多`WKWebView`的相关知识，可以查阅SDK，[这篇文章](https://github.com/CheeryLau/WKWebView)或许也会有些帮助。
 
-## 使用[CocoaPods]
+## 使用 
 
 1. `pod "MMWebView"`;
 2. `pod install` / `pod update`;
