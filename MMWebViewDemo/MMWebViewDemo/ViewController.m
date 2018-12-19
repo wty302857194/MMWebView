@@ -9,9 +9,9 @@
 #import "ViewController.h"
 #import "MMWebView.h"
 
-@interface ViewController () <MMWebViewDelegate>
+@interface ViewController ()<MMWebViewDelegate>
 
-@property (nonatomic, strong) MMWebView * webView;
+@property (nonatomic, strong) MMWebView *webView;
 
 @end
 

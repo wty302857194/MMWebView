@@ -42,9 +42,9 @@ _webView.allowsBackForwardNavigationGestures = YES;
 // 是否显示进度条[默认 NO]
 @property (nonatomic, assign) BOOL displayProgressBar;
 // displayProgressBar为YES是可用
-@property (nonatomic, strong) UIColor * progressTintColor;
+@property (nonatomic, strong) UIColor *progressTintColor;
 // displayProgressBar为YES是可用
-@property (nonatomic, strong) UIColor * trackTintColor;
+@property (nonatomic, strong) UIColor *trackTintColor;
 
 ```
 
