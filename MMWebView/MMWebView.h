@@ -13,13 +13,13 @@
 @interface MMWebView : WKWebView <WKNavigationDelegate>
 
 // 代理
-@property (nonatomic,assign) id<MMWebViewDelegate> delegate;
+@property (nonatomic, assign) id<MMWebViewDelegate> delegate;
 // 是否显示进度条[默认 NO]
-@property (nonatomic,assign) BOOL displayProgressBar;
+@property (nonatomic, assign) BOOL displayProgressBar;
 // displayProgressBar为YES是可用
-@property(nonatomic, strong) UIColor *progressTintColor;
+@property (nonatomic, strong) UIColor * progressTintColor;
 // displayProgressBar为YES是可用
-@property(nonatomic, strong) UIColor *trackTintColor;
+@property (nonatomic, strong) UIColor * trackTintColor;
 
 /*
  缓存类型，这里清除所有缓存

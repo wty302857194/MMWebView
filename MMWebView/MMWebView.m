@@ -10,7 +10,7 @@
 
 @interface MMWebView ()
 
-@property (nonatomic, strong) UIProgressView *progressBar;
+@property (nonatomic, strong) UIProgressView * progressBar;
 
 @end
 
@@ -69,9 +69,9 @@
 - (void)clearCache
 {
     // 所有类型缓存[详见WKWebsiteDataRecord]
-    NSSet *websiteDataTypes = [WKWebsiteDataStore allWebsiteDataTypes];
+    NSSet * websiteDataTypes = [WKWebsiteDataStore allWebsiteDataTypes];
     // 所有时间
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:0];
+    NSDate * date = [NSDate dateWithTimeIntervalSince1970:0];
     // 移除
     [[WKWebsiteDataStore defaultDataStore] removeDataOfTypes:websiteDataTypes
                                                modifiedSince:date

@@ -7,7 +7,7 @@
 ![MMWebView](Screenshot.png)     
 
 
-类似微信的`webView`进度条加载，支持右滑(侧滑)返回，`MMWebView`继承于`WKWebView`，按照`UIWebView`代理的方式，重写WKNavigationDelegate。写本控件的初衷是因为公司项目中多使用`UIWebView`，为了添加右滑(侧滑)返回和进度条，如果改成`WKWebView`，工作量比较大。所以写了`MMWebView`，方便全局修改。至于进度条，可以用使用本控件中的，也可以自己写。希望本控件可以帮助到你。
+网页加载，包含进度条，支持右滑(侧滑)返回。`MMWebView`继承于`WKWebView`，按照`UIWebViewDelegate`的方式，重写`WKNavigationDelegate`，并增加进度和标题的代理。写本控件的初衷是因为公司项目中多使用`UIWebView`，为了优化内存、添加右滑(侧滑)返回和进度条，如果直接改成`WKWebView`，工作量比较大，所以写了`MMWebView`，以便全局修改。至于进度条，可以用使用本控件中的，也可以自己写。希望本控件可以帮助到你。
 
 更多`WKWebView`的相关知识，可以查阅SDK，[这篇文章](https://github.com/CheeryLau/WKWebView)或许也会有些帮助。
 
@@ -42,9 +42,9 @@ _webView.allowsBackForwardNavigationGestures = YES;
 // 是否显示进度条[默认 NO]
 @property (nonatomic, assign) BOOL displayProgressBar;
 // displayProgressBar为YES是可用
-@property (nonatomic, strong) UIColor *progressTintColor;
+@property (nonatomic, strong) UIColor * progressTintColor;
 // displayProgressBar为YES是可用
-@property (nonatomic, strong) UIColor *trackTintColor;
+@property (nonatomic, strong) UIColor * trackTintColor;
 
 ```
 

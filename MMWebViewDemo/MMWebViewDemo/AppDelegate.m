@@ -18,13 +18,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    ViewController *mmVC = [[ViewController alloc] init];
-    UINavigationController *mmNav = [[UINavigationController alloc] initWithRootViewController:mmVC];
-    [mmNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"default_bar"] forBarMetrics:UIBarMetricsDefault];
-    mmNav.navigationBar.tintColor = [UIColor blackColor];
+    ViewController * controller = [[ViewController alloc] init];
+    UINavigationController * navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navigationController.navigationBar.tintColor = [UIColor blackColor];
+    navigationController.navigationBar.translucent = NO;
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = mmNav;
+    self.window.rootViewController = navigationController;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
