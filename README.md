@@ -1,6 +1,6 @@
 # MMWebView
 
-[![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/CheeryLau/MMWebView/master/LICENSE)&nbsp;
+[![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/ChellyLau/MMWebView/master/LICENSE)&nbsp;
 [![CocoaPods](http://img.shields.io/cocoapods/v/MMWebView.svg?style=flat)](http://cocoapods.org/?q=MMWebView)&nbsp;
 [![CocoaPods](http://img.shields.io/cocoapods/p/MMWebView.svg?style=flat)](http://cocoapods.org/?q=MMWebView)&nbsp;
 
@@ -9,7 +9,7 @@
 
 网页加载，包含进度条，支持右滑(侧滑)返回、缓存清理。`MMWebView`继承于`WKWebView`，按照`UIWebViewDelegate`的方式，重写`WKNavigationDelegate`，并增加进度和标题的代理。写本控件的初衷是因为公司项目中多使用`UIWebView`，为了优化内存、添加右滑(侧滑)返回和进度条，如果直接改成`WKWebView`，工作量比较大，所以写了`MMWebView`，以便全局修改。至于进度条，可以用使用本控件中的，也可以自己写。希望本控件可以帮助到你。
 
-更多`WKWebView`的相关知识，可以查阅SDK，[这篇文章](https://github.com/CheeryLau/WKWebView)或许也会有些帮助。
+更多`WKWebView`的相关知识，可以查阅SDK，[这篇文章](https://github.com/ChellyLau/WKWebView)或许也会有些帮助。
 
 ## 使用 
 
@@ -111,6 +111,6 @@ _webView.allowsBackForwardNavigationGestures = YES;
 
 ## 后记
 
-不定时更新，如有问题欢迎给我[留言](https://github.com/CheeryLau/MMWebView/issues)，我会及时回复。如果这个工具对你有一些帮助，请给我一个star，谢谢。
+不定时更新，如有问题欢迎给我[留言](https://github.com/ChellyLau/MMWebView/issues)，我会及时回复。如果这个工具对你有一些帮助，请给我一个star，谢谢。
 
 
