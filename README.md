@@ -3,13 +3,21 @@
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/ChellyLau/MMWebView/master/LICENSE)&nbsp;
 [![CocoaPods](http://img.shields.io/cocoapods/v/MMWebView.svg?style=flat)](http://cocoapods.org/?q=MMWebView)&nbsp;
 [![CocoaPods](http://img.shields.io/cocoapods/p/MMWebView.svg?style=flat)](http://cocoapods.org/?q=MMWebView)&nbsp;
+[![Support](https://img.shields.io/badge/support-iOS%208.0%2B%20-blue.svg?style=flat)](https://www.apple.com/nl/ios/)&nbsp;
 
-![MMWebView](Screenshot.png)     
+
+`MMWebView`继承于`WKWebView`，按照`UIWebViewDelegate`的方式，重写`WKNavigationDelegate`，并增加进度和标题的代理。写本控件的初衷是因为公司项目中多使用`UIWebView`，为了优化内存、添加侧滑返回和进度条，如果直接改成`WKWebView`，工作量比较大，所以写了`MMWebView`。
 
 
-网页加载，包含进度条，支持右滑(侧滑)返回、缓存清理。`MMWebView`继承于`WKWebView`，按照`UIWebViewDelegate`的方式，重写`WKNavigationDelegate`，并增加进度和标题的代理。写本控件的初衷是因为公司项目中多使用`UIWebView`，为了优化内存、添加右滑(侧滑)返回和进度条，如果直接改成`WKWebView`，工作量比较大，所以写了`MMWebView`，以便全局修改。至于进度条，可以用使用本控件中的，也可以自己写。希望本控件可以帮助到你。
+**PS**：有童靴给我[留言](https://github.com/ChellyLau/MMWebView/issues)：本控件与[WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge)冲突，确实存在代理冲突，因此新版本中加入了[WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge)，详见本控件代码。
 
-更多`WKWebView`的相关知识，可以查阅SDK，[这篇文章](https://github.com/ChellyLau/WKWebView)或许也会有些帮助。
+
+## 功能介绍
+
+1. 支持右滑(侧滑)返回；
+2. 支持进度条；
+3. 支持清理缓存；
+4. 支持OC与Web交互。
 
 ## 使用 
 
@@ -20,17 +28,20 @@
 ## 示例
 
 ```objc
-// 初始化
+NSString * htmlPath = [[NSBundle mainBundle] pathForResource:@"ExampleApp" ofType:@"html"];
+NSString * appHtml = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:nil];
+NSURL * baseURL = [NSURL fileURLWithPath:htmlPath];
+    
 _webView = [[MMWebView alloc] initWithFrame:self.view.bounds];
-// 代理
 _webView.delegate = self;
-// 显示进度条
-_webView.displayProgressBar = YES;
-// 允许侧滑返回
-_webView.allowsBackForwardNavigationGestures = YES;
-// 加载
-[_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com"]]];
-// 添加视图
+_webView.displayProgressBar = YES; // 显示进度条
+ _webView.allowBackGesture = YES;  // 允许侧滑返回
+[_webView setupJSBridge];  // JS交互
+[_webView registerHandler:@"testObjcCallback" handler:^(id data, WVJSResponseCallback responseCallback) {
+    responseCallback(@"Response from testObjcCallback");
+}];
+[_webView callHandler:@"testJavascriptHandler" data:@{ @"foo":@"before ready" }];
+[_webView loadHTMLString:appHtml baseURL:baseURL];
 [self.view addSubview:_webView];
 ```
 
@@ -41,14 +52,35 @@ _webView.allowsBackForwardNavigationGestures = YES;
 @property (nonatomic, assign) id<MMWebViewDelegate> delegate;
 // 是否显示进度条[默认 NO]
 @property (nonatomic, assign) BOOL displayProgressBar;
-// displayProgressBar为YES是可用
+// 是否允许侧滑返回[默认 NO]
+@property (nonatomic, assign) BOOL allowBackGesture;
+// displayProgressBar为YES时可用
 @property (nonatomic, strong) UIColor *progressTintColor;
-// displayProgressBar为YES是可用
+// displayProgressBar为YES时可用
 @property (nonatomic, strong) UIColor *trackTintColor;
-
 ```
 
+## 方法
+
+```objc
+// 清缓存
+- (void)clearCache;
+
+// JS相关
+- (void)setupJSBridge; // 需先setup，否则以下方法无效
+- (void)registerHandler:(NSString *)handlerName handler:(WVJSHandler)handler;
+- (void)removeHandler:(NSString *)handlerName;
+- (void)callHandler:(NSString *)handlerName;
+- (void)callHandler:(NSString *)handlerName data:(id)data;
+- (void)callHandler:(NSString *)handlerName data:(id)data responseCallback:(WVJSResponseCallback)responseCallback;
+- (void)reset;
+```
+
+
 ## 代理
+
+`MMWebViewDelegate`仅包含常用代理，如果不能满足使用，请给我[留言](https://github.com/ChellyLau/MMWebView/issues)，我会及时添加。
+
 
 ```objc
 @protocol MMWebViewDelegate <NSObject>
@@ -107,10 +139,11 @@ _webView.allowsBackForwardNavigationGestures = YES;
                                                
                                            }];
 }
-```
+``` 
 
 ## 后记
 
-不定时更新，如有问题欢迎给我[留言](https://github.com/ChellyLau/MMWebView/issues)，我会及时回复。如果这个工具对你有一些帮助，请给我一个star，谢谢。
+本控件中JSBridge来自[WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge)，感谢[marcuswestin](https://github.com/marcuswestin)为我们带来的便捷。本控件不定时更新，如有问题欢迎给我[留言](https://github.com/ChellyLau/MMWebView/issues)，我会及时回复。如果这个工具对你有一些帮助，请给我一个star，谢谢🌹🌹。
+
 
 

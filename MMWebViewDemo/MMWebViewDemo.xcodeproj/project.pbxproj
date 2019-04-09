@@ -14,7 +14,11 @@
 		8B50AF2B1ECEF32800853D19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B50AF2A1ECEF32800853D19 /* Assets.xcassets */; };
 		8B50AF2E1ECEF32800853D19 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B50AF2C1ECEF32800853D19 /* LaunchScreen.storyboard */; };
 		8B8459FC1ED2811800C7469F /* MMWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8459FB1ED2811800C7469F /* MMWebView.m */; };
-		8BD099531FBAA19400948B37 /* default_bar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD099521FBAA19400948B37 /* default_bar@2x.png */; };
+		FA9DFDEF225C4B750006C54E /* MMWebViewJS.m in Sources */ = {isa = PBXBuildFile; fileRef = FA9DFDEE225C4B750006C54E /* MMWebViewJS.m */; };
+		FA9DFDF5225C4C540006C54E /* MMWebViewJSBridgeBase.m in Sources */ = {isa = PBXBuildFile; fileRef = FA9DFDF4225C4C540006C54E /* MMWebViewJSBridgeBase.m */; };
+		FA9DFDF7225C7EB60006C54E /* ExampleApp.html in Resources */ = {isa = PBXBuildFile; fileRef = FA9DFDF6225C7EB60006C54E /* ExampleApp.html */; };
+		FA9DFDFB225C81E70006C54E /* MMWebView.podspec in Resources */ = {isa = PBXBuildFile; fileRef = FA9DFDF9225C81E70006C54E /* MMWebView.podspec */; };
+		FA9DFDFC225C81E70006C54E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = FA9DFDFA225C81E70006C54E /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,7 +34,13 @@
 		8B50AF2F1ECEF32800853D19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B8459FA1ED2811800C7469F /* MMWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMWebView.h; sourceTree = "<group>"; };
 		8B8459FB1ED2811800C7469F /* MMWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMWebView.m; sourceTree = "<group>"; };
-		8BD099521FBAA19400948B37 /* default_bar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default_bar@2x.png"; sourceTree = "<group>"; };
+		FA9DFDED225C4B750006C54E /* MMWebViewJS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMWebViewJS.h; sourceTree = "<group>"; };
+		FA9DFDEE225C4B750006C54E /* MMWebViewJS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMWebViewJS.m; sourceTree = "<group>"; };
+		FA9DFDF3225C4C540006C54E /* MMWebViewJSBridgeBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMWebViewJSBridgeBase.h; sourceTree = "<group>"; };
+		FA9DFDF4225C4C540006C54E /* MMWebViewJSBridgeBase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMWebViewJSBridgeBase.m; sourceTree = "<group>"; };
+		FA9DFDF6225C7EB60006C54E /* ExampleApp.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = ExampleApp.html; sourceTree = "<group>"; };
+		FA9DFDF9225C81E70006C54E /* MMWebView.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = MMWebView.podspec; path = ../../MMWebView.podspec; sourceTree = "<group>"; };
+		FA9DFDFA225C81E70006C54E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +73,7 @@
 		8B50AF1D1ECEF32800853D19 /* MMWebViewDemo */ = {
 			isa = PBXGroup;
 			children = (
+				FA9DFDF8225C81DB0006C54E /* Pod */,
 				8B50AF471ECEFDC600853D19 /* MMWebView */,
 				8B50AF211ECEF32800853D19 /* AppDelegate.h */,
 				8B50AF221ECEF32800853D19 /* AppDelegate.m */,
@@ -76,7 +87,7 @@
 		8B50AF1E1ECEF32800853D19 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				8BD099521FBAA19400948B37 /* default_bar@2x.png */,
+				FA9DFDF6225C7EB60006C54E /* ExampleApp.html */,
 				8B50AF271ECEF32800853D19 /* Main.storyboard */,
 				8B50AF2A1ECEF32800853D19 /* Assets.xcassets */,
 				8B50AF2C1ECEF32800853D19 /* LaunchScreen.storyboard */,
@@ -89,11 +100,24 @@
 		8B50AF471ECEFDC600853D19 /* MMWebView */ = {
 			isa = PBXGroup;
 			children = (
+				FA9DFDF3225C4C540006C54E /* MMWebViewJSBridgeBase.h */,
+				FA9DFDF4225C4C540006C54E /* MMWebViewJSBridgeBase.m */,
+				FA9DFDED225C4B750006C54E /* MMWebViewJS.h */,
+				FA9DFDEE225C4B750006C54E /* MMWebViewJS.m */,
 				8B8459FA1ED2811800C7469F /* MMWebView.h */,
 				8B8459FB1ED2811800C7469F /* MMWebView.m */,
 			);
 			name = MMWebView;
 			path = ../../MMWebView;
+			sourceTree = "<group>";
+		};
+		FA9DFDF8225C81DB0006C54E /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				FA9DFDF9225C81E70006C54E /* MMWebView.podspec */,
+				FA9DFDFA225C81E70006C54E /* README.md */,
+			);
+			name = Pod;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,8 +179,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BD099531FBAA19400948B37 /* default_bar@2x.png in Resources */,
+				FA9DFDFC225C81E70006C54E /* README.md in Resources */,
+				FA9DFDF7225C7EB60006C54E /* ExampleApp.html in Resources */,
 				8B50AF2E1ECEF32800853D19 /* LaunchScreen.storyboard in Resources */,
+				FA9DFDFB225C81E70006C54E /* MMWebView.podspec in Resources */,
 				8B50AF2B1ECEF32800853D19 /* Assets.xcassets in Resources */,
 				8B50AF291ECEF32800853D19 /* Main.storyboard in Resources */,
 			);
@@ -172,6 +198,8 @@
 				8B50AF261ECEF32800853D19 /* ViewController.m in Sources */,
 				8B8459FC1ED2811800C7469F /* MMWebView.m in Sources */,
 				8B50AF231ECEF32800853D19 /* AppDelegate.m in Sources */,
+				FA9DFDEF225C4B750006C54E /* MMWebViewJS.m in Sources */,
+				FA9DFDF5225C4C540006C54E /* MMWebViewJSBridgeBase.m in Sources */,
 				8B50AF201ECEF32800853D19 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -20,18 +20,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"Demo";
     
-    // 初始化
+    NSString * htmlPath = [[NSBundle mainBundle] pathForResource:@"ExampleApp" ofType:@"html"];
+    NSString * appHtml = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:nil];
+    NSURL * baseURL = [NSURL fileURLWithPath:htmlPath];
+    
     _webView = [[MMWebView alloc] initWithFrame:self.view.bounds];
-    // 代理
     _webView.delegate = self;
-    // 显示进度条
-    _webView.displayProgressBar = YES;
-    // 允许侧滑返回
-    _webView.allowsBackForwardNavigationGestures = YES;
-    // 加载
-    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://github.com"]]];
-    // 添加视图
+    _webView.displayProgressBar = YES; // 显示进度条
+    _webView.allowBackGesture = YES;  // 允许侧滑返回
+    [_webView setupJSBridge];  // JS交互
+    [_webView registerHandler:@"testObjcCallback" handler:^(id data, WVJSResponseCallback responseCallback) {
+        responseCallback(@"Response from testObjcCallback");
+    }];
+    [_webView callHandler:@"testJavascriptHandler" data:@{ @"foo":@"before ready" }];
+    [_webView loadHTMLString:appHtml baseURL:baseURL];
     [self.view addSubview:_webView];
 }
 

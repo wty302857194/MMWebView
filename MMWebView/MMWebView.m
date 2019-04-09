@@ -8,9 +8,10 @@
 
 #import "MMWebView.h"
 
-@interface MMWebView ()
+@interface MMWebView ()<MMWebViewJSBridgeBaseDelegate>
 
-@property (nonatomic, strong) UIProgressView *progressBar;
+@property (nonatomic, strong) UIProgressView * progressBar;
+@property (nonatomic, strong) MMWebViewJSBridgeBase * base;
 
 @end
 
@@ -20,49 +21,77 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // 监听网页加载进度
-        [self addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
-        // 监听网页标题变化
-        [self addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:nil];
+        [self setup];
     }
     return self;
 }
 
-#pragma mark - setter
-- (void)setDelegate:(id<MMWebViewDelegate>)delegate
+- (instancetype)init
 {
-    _delegate = delegate;
-    if (delegate) {
-        self.navigationDelegate = self;
+    if (self = [super init]) {
+        [self setup];
     }
+    return self;
 }
 
-- (void)setDisplayProgressBar:(BOOL)displayProgressBar
+- (void)setup
 {
-    _displayProgressBar = displayProgressBar;
-    if (displayProgressBar) {
-        _progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.bounds.size.width, 5.0f)];
-        _progressBar.backgroundColor = [UIColor clearColor];
-        _progressBar.trackTintColor = [UIColor clearColor];
-        _progressBar.progressTintColor = [UIColor orangeColor];
-        [self addSubview:_progressBar];
-    }
+    // 初始化数据
+    _allowBackGesture = NO;
+    _displayProgressBar = NO;
+    _trackTintColor = [UIColor clearColor];
+    _progressTintColor = [UIColor orangeColor];
+    // 监听
+    [self addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
+    [self addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:nil];
 }
 
-- (void)setTrackTintColor:(UIColor *)trackTintColor
+- (void)setupJSBridge
 {
-    _trackTintColor = trackTintColor;
-    if (_progressBar) {
-        _progressBar.trackTintColor = trackTintColor;
-    }
+    _base = [[MMWebViewJSBridgeBase alloc] init];
+    _base.delegate = self;
 }
 
-- (void)setProgressTintColor:(UIColor *)progressTintColor
-{
-    _progressTintColor = progressTintColor;
-    if (_progressBar) {
-        _progressBar.progressTintColor = progressTintColor;
-    }
+#pragma mark - JS相关
+- (void)registerHandler:(NSString *)handlerName handler:(WVJSHandler)handler {
+    _base.messageHandlers[handlerName] = [handler copy];
+}
+
+- (void)removeHandler:(NSString *)handlerName {
+    [_base.messageHandlers removeObjectForKey:handlerName];
+}
+
+- (void)callHandler:(NSString *)handlerName {
+    [self callHandler:handlerName data:nil responseCallback:nil];
+}
+
+- (void)callHandler:(NSString *)handlerName data:(id)data {
+    [self callHandler:handlerName data:data responseCallback:nil];
+}
+
+- (void)callHandler:(NSString *)handlerName data:(id)data responseCallback:(WVJSResponseCallback)responseCallback {
+    [_base sendData:data responseCallback:responseCallback handlerName:handlerName];
+}
+
+- (void)send:(id)data {
+    [self send:data responseCallback:nil];
+}
+
+- (void)send:(id)data responseCallback:(WVJSResponseCallback)responseCallback {
+    [_base sendData:data responseCallback:responseCallback handlerName:nil];
+}
+
+- (void)reset {
+    [_base reset];
+}
+
+- (void)WKFlushMessageQueue {
+    [self evaluateJavaScript:[_base webViewJavascriptFetchQueyCommand] completionHandler:^(NSString *result, NSError *error) {
+        if (error != nil) {
+            NSLog(@"JSBridge Error: %@", error);
+        }
+        [_base flushMessageQueue:result];
+    }];
 }
 
 #pragma mark - 清缓存
@@ -87,15 +116,12 @@
     if (object == self && [keyPath isEqualToString:@"estimatedProgress"])
     {
         CGFloat progress = [[change objectForKey:NSKeyValueChangeNewKey] doubleValue];
+        self.progressBar.progress = progress;
+        if (progress == 1.0) {
+            self.progressBar.progress = 0;
+        }
         if ([self.delegate respondsToSelector:@selector(webView:estimatedProgress:)]) {
             [self.delegate webView:self estimatedProgress:progress];
-        }
-        // 如果使用本类中的进度条，代理可不用!!!
-        if (_progressBar) {
-            _progressBar.progress = progress;
-            if (progress == 1.0) {
-                _progressBar.progress = 0;
-            }
         }
     }
     if (object == self && [keyPath isEqualToString:@"title"])
@@ -111,9 +137,23 @@
 // 网页开始加载
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
+    NSURL * url = navigationAction.request.URL;
+    if (_base && [_base isWebViewJavascriptBridgeURL:url]) {
+        if ([_base isBridgeLoadedURL:url]) {
+            [_base injectJavascriptFile];
+        } else if ([_base isQueueMessageURL:url]) {
+            [self WKFlushMessageQueue];
+        } else {
+            [_base logUnkownMessage:url];
+        }
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
+    }
     BOOL isAllow = YES;
     if ([self.delegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
-        isAllow = [self.delegate webView:self shouldStartLoadWithRequest:navigationAction.request navigationType:navigationAction.navigationType];
+        isAllow = [self.delegate webView:self
+              shouldStartLoadWithRequest:navigationAction.request
+                          navigationType:navigationAction.navigationType];
     }
     if (isAllow) {
         decisionHandler(WKNavigationActionPolicyAllow);
@@ -144,6 +184,54 @@
     if ([self.delegate respondsToSelector:@selector(webView:didFailLoadWithError:)]) {
         [self.delegate webView:self didFailLoadWithError:error];
     }
+}
+
+#pragma mark - 代理<MMWebViewJSBridgeBaseDelegate>
+- (NSString *)_evaluateJavascript:(NSString*)javascriptCommand {
+    [self evaluateJavaScript:javascriptCommand completionHandler:nil];
+    return NULL;
+}
+
+#pragma mark - setter
+- (void)setDelegate:(id<MMWebViewDelegate>)delegate {
+    _delegate = delegate;
+    if (delegate) {
+        self.navigationDelegate = self;
+    }
+}
+
+- (void)setDisplayProgressBar:(BOOL)displayProgressBar {
+    _displayProgressBar = displayProgressBar;
+    self.progressBar.hidden = !displayProgressBar;
+}
+
+- (void)setAllowBackGesture:(BOOL)allowBackGesture {
+    _allowBackGesture = allowBackGesture;
+    self.allowsBackForwardNavigationGestures = allowBackGesture;
+}
+
+- (void)setTrackTintColor:(UIColor *)trackTintColor {
+    _trackTintColor = trackTintColor;
+    self.progressBar.trackTintColor = trackTintColor;
+}
+
+- (void)setProgressTintColor:(UIColor *)progressTintColor {
+    _progressTintColor = progressTintColor;
+    self.progressBar.progressTintColor = progressTintColor;
+}
+
+#pragma mark - getter
+- (UIProgressView *)progressBar
+{
+    if (!_progressBar) {
+        _progressBar = [[UIProgressView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.bounds.size.width, 5.0f)];
+        _progressBar.backgroundColor = [UIColor clearColor];
+        _progressBar.trackTintColor = _trackTintColor;
+        _progressBar.progressTintColor = _progressTintColor;
+        _progressBar.hidden = !_displayProgressBar;
+        [self addSubview:_progressBar];
+    }
+    return _progressBar;
 }
 
 #pragma mark - dealloc
