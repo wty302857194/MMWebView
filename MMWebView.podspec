@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.license          = 'MIT'
   s.author           = { "Chelly Lau" => "1625977078@qq.com" }
   s.source           = { :git => "https://github.com/ChellyLau/MMWebView.git", :tag => s.version.to_s }
-  s.platform         = :ios, '8.0'
+  s.platform         = :ios, '9.0'
   s.requires_arc     = true
   s.source_files     = 'MMWebView/**/*.{h,m}'
   s.frameworks       = 'WebKit'

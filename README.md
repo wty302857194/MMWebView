@@ -3,7 +3,7 @@
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/ChellyLau/MMWebView/master/LICENSE)&nbsp;
 [![CocoaPods](http://img.shields.io/cocoapods/v/MMWebView.svg?style=flat)](http://cocoapods.org/?q=MMWebView)&nbsp;
 [![CocoaPods](http://img.shields.io/cocoapods/p/MMWebView.svg?style=flat)](http://cocoapods.org/?q=MMWebView)&nbsp;
-[![Support](https://img.shields.io/badge/support-iOS%208.0%2B%20-blue.svg?style=flat)](https://www.apple.com/nl/ios/)&nbsp;
+[![Support](https://img.shields.io/badge/support-iOS%209.0%2B%20-blue.svg?style=flat)](https://www.apple.com/nl/ios/)&nbsp;
 
 
 `MMWebView`继承于`WKWebView`，按照`UIWebViewDelegate`的方式，重写`WKNavigationDelegate`，并增加进度和标题的代理。写本控件的初衷是因为公司项目中多使用`UIWebView`，为了优化内存、添加侧滑返回和进度条，如果直接改成`WKWebView`，工作量比较大，所以写了`MMWebView`。
